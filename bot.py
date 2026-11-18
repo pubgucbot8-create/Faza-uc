@@ -411,7 +411,7 @@ async def main():
             await dp.start_polling(bot)
             break
         except Exception as e:
-                        log.error("XATO: %s | %s", type(e).__name__, str(e)[:300])
+            log.error("XATO: %s | %s", type(e).__name__, str(e)[:300])
             log.info("15 soniyadan keyin qayta uriniladi...")
         finally:
             await bot.session.close()
