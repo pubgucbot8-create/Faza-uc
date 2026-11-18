@@ -402,9 +402,17 @@ async def main():
         raise SystemExit("BOT_TOKEN topilmadi. Railway Variables ga BOT_TOKEN qo'shing.")
     init_db()
     bot = Bot(BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-    await bot.delete_webhook(drop_pending_updates=True)
-    log.info("fazauc_bot ishga tushdi")
-    await dp.start_polling(bot)
+    try:
+        me = await bot.get_me()
+        log.info("TOKEN TO'G'RI: @%s", me.username)
+        await bot.delete_webhook(drop_pending_updates=True)
+        log.info("fazauc_bot ishga tushdi")
+        await dp.start_polling(bot)
+    except Exception as e:
+        log.error("XATO TURI: %s", type(e).__name__)
+        log.error("XATO MATNI: %s", e)
+    finally:
+        await bot.session.close()
 
 
 if __name__ == "__main__":
