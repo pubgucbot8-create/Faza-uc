@@ -398,11 +398,20 @@ async def fallback(m: Message):
 
 
 async def main():
+    import socket
+    from aiogram.client.session.aiohttp import AiohttpSession
+
     if not BOT_TOKEN:
         raise SystemExit("BOT_TOKEN topilmadi. Railway Variables ga BOT_TOKEN qo'shing.")
     init_db()
     while True:
-        bot = Bot(BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+        session = AiohttpSession()
+        session._connector_init.update(family=socket.AF_INET)
+        bot = Bot(
+            BOT_TOKEN,
+            session=session,
+            default=DefaultBotProperties(parse_mode=ParseMode.HTML),
+        )
         try:
             me = await bot.get_me()
             log.info("TOKEN TO'G'RI: @%s", me.username)
